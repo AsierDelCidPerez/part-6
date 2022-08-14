@@ -1,30 +1,21 @@
 import { createStore } from "redux"
-import ReactDOM  from "react"
+import ReactDOM  from "react-dom/client"
+import { Provider } from "react-redux"
+import NoteApp from "./components/SimplyNotes/NoteApp"
+import noteReducer from "./reducers/noteReducer"
+
+const store = createStore(noteReducer)
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
 const renderizar = () => {
-    root.render(<NoteAppSimplify/>)
-}
-
-const noteReducer = (state = [], action) => {
-    switch(action.type){
-        case 'NEW_NOTE':
-            return state.concat(action.data)
-        default:
-            return state
-    }
-}
-
-const NoteAppSimplify = () => {
-
-    return (
-        <div>
-            <ul>
-
-            </ul>
-        </div>
+    root.render(
+        <Provider store={store}>
+            <NoteApp/>
+        </Provider>
     )
 }
+
+// store.subscribe(renderizar)
 
 export default renderizar
