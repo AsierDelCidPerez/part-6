@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { toggleImportanceOf } from "../../reducers/noteReducer"
+import { inicializarNotes, toggleImportanceOf } from "../../reducers/noteReducer"
+import { getAll } from "./services/notes"
 
 
 const Note = ({note, handleClick}) => (
@@ -13,6 +14,11 @@ const Note = ({note, handleClick}) => (
 const Notes = () => {
     const dispatch = useDispatch()
     const filter = useSelector(state => state.filter)
+    useEffect(() => {
+        getAll().then(res => 
+            dispatch(inicializarNotes(res.data))
+        )
+    }, [dispatch])
     const filtro = note => {
         switch(filter){
             case 'IMPORTANT':

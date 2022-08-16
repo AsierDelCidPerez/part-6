@@ -25,18 +25,25 @@ const noteReducer = (state = initialState, action) => {
             }
             return state.map(note => note.id === id ? noteChanged : note)
         }
+        case 'INITIAL_NOTES':{
+            return action.data
+        }
         default:
             return state
     }
 }
 
-const getId = () => Number(Math.random()*1000000)
+export const inicializarNotes = content => {
+    return {
+        type: 'INITIAL_NOTES',
+        data: content
+    }
+}
 
 export const addNote = content => {
-    const [important, id] = [false, getId()]
     return {
         type: 'NEW_NOTE',
-        data: {content, important, id}
+        data: {content, important:false}
     }
 }
 

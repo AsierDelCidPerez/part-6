@@ -8,12 +8,7 @@ import Filter from "./Filter"
 
 const NoteApp = () => {
     const dispatch = useDispatch()
-
-    const agregarNota = event => {
-        event.preventDefault()
-        dispatch(addNote(event.target.note.value))
-    }
-
+    
     return (
         <div>
             <NoteForm/>
