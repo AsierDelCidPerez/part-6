@@ -1,9 +1,16 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { inicializarNotes, toggleImportanceOf } from "../../reducers/noteReducer"
+import { inicializarNotes } from "../../reducers/noteReducer"
+import { connect } from "react-redux"
 import { getAll } from "./services/notes"
 import { initializeNotes } from "./store"
 
+const toggleImportanceOf = id => {
+    return {
+        type: 'TOGGLE_IMPORTANCE',
+        data: {id}
+    }
+}
 
 const Note = ({note, handleClick}) => (
     <li onClick={handleClick}>
@@ -12,34 +19,35 @@ const Note = ({note, handleClick}) => (
     </li>
 )
 
-const Notes = () => {
+const Notes = props => {
     const dispatch = useDispatch()
-    const filter = useSelector(state => state.filter)
-    useEffect(() => {
-        dispatch(initializeNotes())
-    }, [dispatch])
-    const filtro = note => {
-        switch(filter){
-            case 'IMPORTANT':
-                return note.important
-            case 'ALL':
-                return true
-            case 'NONIMPORTANT':
-                return !note.important
-        }
-    }
+
     //console.log(useSelector(state => state))
     return (
         <ul>
         {
-            useSelector(state => state.notes).filter(filtro).map(note => (
+            props.notes.map(note => (
                 <Note key={note.id}
                     note={note}
-                    handleClick={() => dispatch(toggleImportanceOf(note.id))}/>
+                    handleClick={() => props.toggleImportanceOf(note.id)}/>
             ))
         }
     </ul>
     )
 }
 
-export default Notes
+const mapStateToProps = state => {
+    if(state.filter === 'ALL') return {notes: state.notes}
+    return { 
+        notes: 
+        state.filter === 'IMPORTANT'
+        ? state.notes.filter(note => note.important)
+        : state.notes.filter(note => !note.important)
+    }
+}
+
+const mapDispatchToProps = {
+    toggleImportanceOf
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Notes)

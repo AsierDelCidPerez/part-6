@@ -1,16 +1,18 @@
 import { useDispatch } from "react-redux"
-import { addNote } from "../../reducers/noteReducer"
 import { create } from "./services/notes"
 import { createNote } from "./store"
+import { connect } from "react-redux"
+import { addNote } from "../../reducers/noteReducer"
 
-const NoteForm = () => {
+const NoteForm = props => {
     const dispatch = useDispatch()
     
     const agregarNota = async event => {
         event.preventDefault()
         const content = event.target.note.value
         event.target.note.value = ''
-        dispatch(createNote(content))
+        // dispatch(createNote(content))
+        props.addNote(content)
     }
     return (
         <form onSubmit={agregarNota}>
@@ -20,4 +22,4 @@ const NoteForm = () => {
     )
 }
 
-export default NoteForm
+export default connect(null, {addNote})(NoteForm)
