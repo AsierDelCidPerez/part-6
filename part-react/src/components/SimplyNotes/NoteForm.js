@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux"
 import { addNote } from "../../reducers/noteReducer"
 import { create } from "./services/notes"
+import { createNote } from "./store"
 
 const NoteForm = () => {
     const dispatch = useDispatch()
@@ -9,13 +10,7 @@ const NoteForm = () => {
         event.preventDefault()
         const content = event.target.note.value
         event.target.note.value = ''
-        const action = addNote(content)
-        const myNote = {
-            ...action,
-            data: (await create(action.data)).data
-        }
-        console.log(myNote)
-        dispatch(myNote)
+        dispatch(createNote(content))
     }
     return (
         <form onSubmit={agregarNota}>

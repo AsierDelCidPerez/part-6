@@ -47,6 +47,14 @@ export const addNote = content => {
     }
 }
 
+export const addLiteralNote = note => {
+    return {
+        type: 'NEW_NOTE',
+        data: note
+    }
+}
+
+
 export const toggleImportanceOf = id => {
     return {
         type: 'TOGGLE_IMPORTANCE',
