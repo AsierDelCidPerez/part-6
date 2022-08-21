@@ -49,12 +49,7 @@ notesRouter.post('/', async (request, response) => {
 })
 
 notesRouter.get('/', async (req, response) => {
-    const token = getTokenFrom(req)
-    if(!token){
-        response.status(401).json({error: 'token missing or invalid'})
-    }
-    const obj = jwt.verify(token, process.env.SECRET)
-    const notes = await Note.find({user: obj.id})
+    const notes = await Note.find({})
     response.json(notes)
 })
 

@@ -9,7 +9,10 @@ import loginService from './services/loginService'
 import LoginForm from './components/LoginForm';
 import Togglable from './components/Togglable';
 import NoteForm from './components/NoteForm';
-import LoggedOption from './components/LoggedOption';
+import ReactDOM from 'react-dom'
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom'
+import LoggedOption from './components/presentationals/LoggedOption';
+import Home from './components/Home';
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -127,15 +130,27 @@ const App = () => {
   const loggedForm = () => <LoggedOption user={user} setUser={setUser} />
 
   return (
-    <div>
-      <h1>Notes</h1>
-      <Notification message={errorMessage}/>
-      {user !== null && loggedForm()}
-      {user === null && loginForm()}
-      {user !== null && notesForm()}
-      <Footer/>
-    </div>
+    <Router>
+      <div>
+        <Link to="/">home</Link>
+        <Link to="/notes">notes</Link>
+        <Link to="/users">users</Link>
+      </div>
+      <Switch>
+        <Route path="/users">
+
+        </Route>
+        <Route path="/">
+          <Home notesToShow={notesToShow}/>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
-export default App;
+const root = ReactDOM.createRoot(document.getElementById('root'))
+const renderizar = () => {
+  root.render(<App/>)
+}
+
+export default renderizar;
