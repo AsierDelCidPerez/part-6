@@ -12,7 +12,7 @@ const NoteForm = props => {
         const content = event.target.note.value
         event.target.note.value = ''
         // dispatch(createNote(content))
-        props.addNote(content)
+        props.createNote(content)
     }
     return (
         <form onSubmit={agregarNota}>
@@ -22,4 +22,12 @@ const NoteForm = props => {
     )
 }
 
-export default connect(null, {addNote})(NoteForm)
+const mapDispatchToProps = dispatch => {
+    return {
+        createNote: value => {
+            dispatch(addNote(value))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(NoteForm)
