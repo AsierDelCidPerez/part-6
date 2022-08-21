@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import AnecForm from './components/AnecForm'
+import AnecList from './components/AnecList'
+import Filter from './components/Filter'
+import Notification from './components/Notification'
+import { initializeNotesWith } from './reducers/anecdoteReducer'
+import { getAll } from './services/anecService'
 
-function App() {
+const App = () => {
+  const anecdotes = useSelector(state => state)
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    getAll().then(res => dispatch(initializeNotesWith(res.data)))
+  }, [dispatch])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Notification/>
+      <Filter/>
+      <AnecList/>
+      <AnecForm/>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
