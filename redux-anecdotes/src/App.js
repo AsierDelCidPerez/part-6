@@ -25,4 +25,10 @@ const App = () => {
   )
 }
 
-export default App
+const root = ReactDOM.createRoot(document.getElementById('root'))
+
+const renderizar = () => {
+    root.render(<App/>)
+}
+
+export default renderizar
