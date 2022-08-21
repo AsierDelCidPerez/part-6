@@ -1,19 +1,16 @@
-import { voteOf } from "../reducers/anecdoteReducer"
-import { useSelector, useDispatch } from "react-redux"
+import { actOfVoteWithId, voteOf } from "../reducers/anecdoteReducer"
 import { updateAnecWithId } from "../services/anecService"
+import { connect } from 'react-redux'
 import { showNotificationWithMsg, voteAnecWithIdUsingAndAnec } from "./Store"
+import { actOfShowNotificationWithMsg } from "../reducers/notificationReducer"
 
-const AnecList = () => {
-    const dispatch = useDispatch()
-    const filtro = useSelector(state => state.filter)
-    console.log(useSelector(state => state))
-    const anecdotes = useSelector(anec => anec.annecdotes).filter(an => an.content.match(filtro))
+const AnecList = props => {
+    const anecdotes = props.anecs
     anecdotes.sort((a, b) => b.votes - a.votes)
 
     const vote = async id => {
         const anec = anecdotes.find(an => an.id === id)
-        dispatch(voteAnecWithIdUsingAndAnec(id, anec))
-        dispatch(showNotificationWithMsg(`You voted "${anec.content}"`))
+        await props.voteWithIdAndAnec(id, anec)
     }
 
     return (
@@ -35,4 +32,22 @@ const AnecList = () => {
     )
 }
 
-export default AnecList
+const mapStateToProps = state => {
+    return {
+        anecs: state.annecdotes.filter(anec => anec.content.match(state.filter)),
+        filter: state.filter
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        voteWithIdAndAnec: async(id, anec) => {
+            const myAnec = {...anec, votes: anec.votes+1}
+            await updateAnecWithId(id, myAnec)
+            dispatch(actOfShowNotificationWithMsg(`You voted: "${myAnec.content}"`))
+            dispatch(actOfVoteWithId(id))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnecList)

@@ -2,14 +2,15 @@ import { useDispatch} from "react-redux"
 import {createAnecOf} from '../reducers/anecdoteReducer'
 import { createAnec } from "../services/anecService"
 import { createNew } from "./Store"
+import {connect} from 'react-redux'
+import { actOfShowNotificationWithMsg } from "../reducers/notificationReducer"
 
-const AnecForm = () => {
-    const dispatch = useDispatch()
+const AnecForm = props => {
     const addAnec = async event => {
         event.preventDefault()
         const content = event.target.anec.value
         event.target.anec.value = ''
-        dispatch(createNew(content))
+        await props.createAnec(content)
     }
 
     return ( 
@@ -23,4 +24,14 @@ const AnecForm = () => {
     )
 }
 
-export default AnecForm
+const mapDispatchToProps = dispatch => {
+    return {
+        createAnec: async content => {
+            const res = await createAnec({content, votes: 0})
+            dispatch(actOfShowNotificationWithMsg(`You created: "${content}"`))
+            dispatch(createAnecOf({id: res.id, content}))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(AnecForm)

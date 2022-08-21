@@ -3,15 +3,15 @@
     {
       "id": 1,
       "content": "If it hurts, do it more often",
-      "votes": 10
+      "votes": 25
     },
     {
       "id": 2,
       "content": "Adding manpower to a late software project makes it later!",
-      "votes": 9
+      "votes": 13
     },
     {
-      "votes": 0,
+      "votes": 1,
       "content": "Esta es mi anecdota",
       "id": 3
     },
@@ -42,8 +42,18 @@
     },
     {
       "content": "Esta es mi nueva nota guay",
-      "votes": 0,
+      "votes": 2,
       "id": 9
+    },
+    {
+      "content": "Mi nueva anecdota",
+      "votes": 0,
+      "id": 10
+    },
+    {
+      "content": "Esta es mi nuevisima nota",
+      "votes": 1,
+      "id": 11
     }
   ]
 }
